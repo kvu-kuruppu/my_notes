@@ -7,10 +7,12 @@ import 'package:my_notebook/views/register_view.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MaterialApp(
-    // home: RegisterView(),
-    home: HomePage(),
-    // home: LoginView(),
+  runApp(MaterialApp(
+    home: const HomePage(),
+    routes: {
+      '/login': (context) => const LoginView(),
+      '/register': (context) => const RegisterView(),
+    },
   ));
 }
 
