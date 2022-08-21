@@ -82,7 +82,14 @@ class _RegisterViewState extends State<RegisterView> {
                             enableSuggestions: false,
                             autocorrect: false,
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 0, 132, 255),
+                              ),
                               onPressed: () async {
                                 final email = _email.text;
                                 final password = _password.text;
@@ -103,7 +110,28 @@ class _RegisterViewState extends State<RegisterView> {
                                   }
                                 }
                               },
-                              child: Text('Register'))
+                              child: Text(
+                                'Register',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text('Already have an account?'),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.black),
+                              onPressed: () {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/login', (route) => false);
+                              },
+                              child: const Text(
+                                'Login',
+                                style: TextStyle(color: Colors.white),
+                              ))
                         ],
                       ),
                     )

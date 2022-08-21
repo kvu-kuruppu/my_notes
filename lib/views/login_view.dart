@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_notebook/views/register_view.dart';
 import '../firebase_options.dart';
 
 class LoginView extends StatefulWidget {
@@ -33,7 +34,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 185, 185, 185),
+      backgroundColor: const Color.fromARGB(255, 185, 185, 185),
       body: FutureBuilder(
           future: Firebase.initializeApp(
             options: DefaultFirebaseOptions.currentPlatform,
@@ -45,11 +46,11 @@ class _LoginViewState extends State<LoginView> {
                   children: [
                     Container(
                       height: 100,
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                       ),
                       child: Row(
-                        children: [
+                        children: const [
                           Text(
                             'Login',
                             style: TextStyle(
@@ -58,14 +59,14 @@ class _LoginViewState extends State<LoginView> {
                         ],
                       ),
                     ),
-                    Divider(),
+                    const Divider(),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Column(
                         children: [
                           // Email
                           TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Enter your email',
                             ),
                             controller: _email,
@@ -74,14 +75,21 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           // Password
                           TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Enter your passowrd'),
+                            decoration: const InputDecoration(
+                                hintText: 'Enter your password'),
                             controller: _password,
                             obscureText: true,
                             enableSuggestions: false,
                             autocorrect: false,
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 0, 132, 255),
+                              ),
                               onPressed: () async {
                                 final email = _email.text;
                                 final password = _password.text;
@@ -100,14 +108,35 @@ class _LoginViewState extends State<LoginView> {
                                   }
                                 }
                               },
-                              child: Text('Login'))
+                              child: const Text(
+                                'Login',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text('Don\'t have an account?'),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.black),
+                              onPressed: () {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/register', (route) => false);
+                              },
+                              child: const Text(
+                                'Create an account',
+                                style: TextStyle(color: Colors.white),
+                              ))
                         ],
                       ),
                     )
                   ],
                 );
               default:
-                return Center(child: const Text('Loading...'));
+                return const Center(child: Text('Loading...'));
             }
           }),
     );
