@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../firebase_options.dart';
+import 'dart:developer' as devtools show log;
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 185, 185, 185),
+      backgroundColor: const Color.fromARGB(255, 185, 185, 185),
       body: FutureBuilder(
           future: Firebase.initializeApp(
             options: DefaultFirebaseOptions.currentPlatform,
@@ -46,11 +47,11 @@ class _RegisterViewState extends State<RegisterView> {
                   children: [
                     Container(
                       height: 100,
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                       ),
                       child: Row(
-                        children: [
+                        children: const [
                           Text(
                             'Register',
                             style: TextStyle(
@@ -59,14 +60,14 @@ class _RegisterViewState extends State<RegisterView> {
                         ],
                       ),
                     ),
-                    Divider(),
+                    const Divider(),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Column(
                         children: [
                           // Email
                           TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Enter your email',
                             ),
                             controller: _email,
@@ -75,8 +76,8 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                           // Password
                           TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Enter your passowrd'),
+                            decoration: const InputDecoration(
+                                hintText: 'Enter your password'),
                             controller: _password,
                             obscureText: true,
                             enableSuggestions: false,
@@ -99,18 +100,18 @@ class _RegisterViewState extends State<RegisterView> {
                                       .createUserWithEmailAndPassword(
                                           email: email, password: password);
 
-                                  print(userCredential);
+                                  devtools.log(userCredential.toString());
                                 } on FirebaseAuthException catch (e) {
                                   if (e.code == 'invalid-email') {
-                                    print('Invalid email');
+                                    devtools.log('Invalid email');
                                   } else if (e.code == 'weak-password') {
-                                    print('Weak password');
+                                    devtools.log('Weak password');
                                   } else if (e.code == 'email-already-in-use') {
-                                    print('Email already in use');
+                                    devtools.log('Email already in use');
                                   }
                                 }
                               },
-                              child: Text(
+                              child: const Text(
                                 'Register',
                                 style: TextStyle(color: Colors.white),
                               )),
@@ -138,7 +139,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ],
                 );
               default:
-                return Center(child: const Text('Loading...'));
+                return const Center(child: Text('Loading...'));
             }
           }),
     );
