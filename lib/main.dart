@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_notebook/constants/routes.dart';
 import 'package:my_notebook/views/home_view.dart';
 import 'package:my_notebook/views/login_view.dart';
 import 'package:my_notebook/views/notes_view.dart';
@@ -11,9 +12,9 @@ void main() {
   runApp(MaterialApp(
     home: const HomePage(),
     routes: {
-      '/login': (context) => const LoginView(),
-      '/register': (context) => const RegisterView(),
-      '/notes': (context) => const NotesView(),
+      loginRoute: (context) => const LoginView(),
+      registerRoute: (context) => const RegisterView(),
+      notesRoute: (context) => const NotesView(),
     },
   ));
 }

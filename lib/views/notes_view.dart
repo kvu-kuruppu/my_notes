@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:my_notebook/constants/routes.dart';
+
 enum MenuAction { logout }
 
 class NotesView extends StatefulWidget {
@@ -17,6 +19,11 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 185, 185, 185),
       appBar: AppBar(
+        title: const Text(
+          'Home',
+          style: TextStyle(
+              fontSize: 50, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
         toolbarHeight: 90,
         actions: [
           PopupMenuButton(
@@ -26,8 +33,10 @@ class _NotesViewState extends State<NotesView> {
                   final shouldLogOut = await showLogOutDialog(context);
                   if (shouldLogOut) {
                     await FirebaseAuth.instance.signOut();
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/login', (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      loginRoute,
+                      (_) => false,
+                    );
                   }
                   devtools.log(shouldLogOut.toString());
                   break;
@@ -44,11 +53,6 @@ class _NotesViewState extends State<NotesView> {
             icon: const Icon(Icons.person, color: Colors.black),
           )
         ],
-        title: const Text(
-          'Home',
-          style: TextStyle(
-              fontSize: 50, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
         elevation: 0,
         backgroundColor: const Color.fromARGB(255, 185, 185, 185),
       ),
@@ -77,7 +81,7 @@ Future<bool> showLogOutDialog(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Sign Out'),
+          title: const Text('Log Out'),
           content: const Text('Are you really wanna log out?'),
           actions: [
             TextButton(
