@@ -103,12 +103,23 @@ class _LoginViewState extends State<LoginView> {
                                     email: email,
                                     password: password,
                                   );
-
+                                  final user =
+                                      FirebaseAuth.instance.currentUser;
+                                  if (user?.emailVerified ?? false) {
+                                    // user email verified
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      notesRoute,
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    // user email not verified
+                                    Navigator.of(context).pushNamed(
+                                      verifyEmailRoute,
+                                      // (route) => false,
+                                    );
+                                  }
                                   devtools.log(userCredential.toString());
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                    notesRoute,
-                                    (route) => false,
-                                  );
                                 } on FirebaseAuthException catch (e) {
                                   if (e.code == 'user-not-found') {
                                     await showErrorDialog(
@@ -137,7 +148,9 @@ class _LoginViewState extends State<LoginView> {
                               },
                               child: const Text(
                                 'Login',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               )),
                           const SizedBox(
                             height: 10,
@@ -148,14 +161,19 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: Colors.black),
+                              backgroundColor: Colors.black,
+                            ),
                             onPressed: () {
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                  registerRoute, (route) => false);
+                                registerRoute,
+                                (route) => false,
+                              );
                             },
                             child: const Text(
                               'Create an account',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],
