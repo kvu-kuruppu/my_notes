@@ -78,7 +78,8 @@ class _LoginViewState extends State<LoginView> {
                           // Password
                           TextField(
                             decoration: const InputDecoration(
-                                hintText: 'Enter your password'),
+                              hintText: 'Enter your password',
+                            ),
                             controller: _password,
                             obscureText: true,
                             enableSuggestions: false,
@@ -124,7 +125,7 @@ class _LoginViewState extends State<LoginView> {
                                   } else {
                                     await showErrorDialog(
                                       context,
-                                      'Error: "${e.code}"',
+                                      'Error: ${e.code}',
                                     );
                                   }
                                 } catch (e) {
@@ -146,16 +147,17 @@ class _LoginViewState extends State<LoginView> {
                             height: 5,
                           ),
                           TextButton(
-                              style: TextButton.styleFrom(
-                                  backgroundColor: Colors.black),
-                              onPressed: () {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    registerRoute, (route) => false);
-                              },
-                              child: const Text(
-                                'Create an account',
-                                style: TextStyle(color: Colors.white),
-                              ))
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.black),
+                            onPressed: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  registerRoute, (route) => false);
+                            },
+                            child: const Text(
+                              'Create an account',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ],
                       ),
                     )
@@ -168,4 +170,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
