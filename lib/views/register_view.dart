@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:my_notebook/constants/routes.dart';
+import 'package:my_notebook/utils/show_error_dialog.dart';
 
 import '../firebase_options.dart';
 import 'dart:developer' as devtools show log;
@@ -104,12 +105,34 @@ class _RegisterViewState extends State<RegisterView> {
                                   devtools.log(userCredential.toString());
                                 } on FirebaseAuthException catch (e) {
                                   if (e.code == 'invalid-email') {
+                                    await showErrorDialog(
+                                      context,
+                                      'Invalid email',
+                                    );
                                     devtools.log('Invalid email');
                                   } else if (e.code == 'weak-password') {
+                                    await showErrorDialog(
+                                      context,
+                                      'Weak password',
+                                    );
                                     devtools.log('Weak password');
                                   } else if (e.code == 'email-already-in-use') {
+                                    await showErrorDialog(
+                                      context,
+                                      'Email already in use',
+                                    );
                                     devtools.log('Email already in use');
+                                  } else {
+                                    await showErrorDialog(
+                                      context,
+                                      'Error: ${e.code}',
+                                    );
                                   }
+                                } catch (e) {
+                                  await showErrorDialog(
+                                      context,
+                                      e.toString(),
+                                    );
                                 }
                               },
                               child: const Text(
