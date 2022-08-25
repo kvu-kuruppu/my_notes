@@ -6,18 +6,18 @@ import 'package:my_notebook/views/notes_view.dart';
 import 'package:my_notebook/views/register_view.dart';
 import 'package:my_notebook/views/verify_email_view.dart';
 
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MaterialApp(
-    home: const HomePage(),
-    routes: {
-      loginRoute: (context) => const LoginView(),
-      registerRoute: (context) => const RegisterView(),
-      notesRoute: (context) => const NotesView(),
-      verifyEmailRoute: (context) => const VerificationView(),
-    },
-  ));
+  runApp(
+    MaterialApp(
+      home: const HomePage(),
+      routes: {
+        loginRoute: (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        notesRoute: (context) => const NotesView(),
+        verifyEmailRoute: (context) => const VerificationView(),
+      },
+    ),
+  );
 }
-
