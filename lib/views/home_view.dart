@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notebook/services/auth/auth_service.dart';
 import 'package:my_notebook/views/login_view.dart';
-import 'package:my_notebook/views/notes_view.dart';
+import 'package:my_notebook/views/notes/notes_view.dart';
 import 'package:my_notebook/views/verify_email_view.dart';
 
 class HomePage extends StatelessWidget {

@@ -35,11 +35,11 @@ class _NotesViewState extends State<NotesView> {
       backgroundColor: const Color.fromARGB(255, 185, 185, 185),
       appBar: AppBar(
         title: const Text(
-          'Home',
+          'Your Notes',
           style: TextStyle(
               fontSize: 50, fontWeight: FontWeight.bold, color: Colors.black),
         ),
-        toolbarHeight: 90,
+        toolbarHeight: 70,
         actions: [
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
@@ -65,7 +65,11 @@ class _NotesViewState extends State<NotesView> {
                 ),
               ];
             },
-            icon: const Icon(Icons.person, color: Colors.black),
+            icon: const Icon(
+              Icons.person,
+              color: Colors.black,
+              size: 30,
+            ),
           )
         ],
         elevation: 0,
@@ -73,33 +77,61 @@ class _NotesViewState extends State<NotesView> {
       ),
       body: ListView(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(newNoteRoute);
+                },
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  decoration: BoxDecoration(
+                      color: Colors.deepPurple[900],
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const Text(
+                    '+ Add Note',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           Container(
             height: 100,
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
             ),
-            child: Row(
+            child: Column(
               children: [
-                FutureBuilder(
-                  future: _notesService.getOrCreateUser(email: userEmail),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.done:
-                        return StreamBuilder(
-                          stream: _notesService.allNotes,
-                          builder: (context, snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.waiting:
-                                return const Text('Waiting for all notes...');
-                              default:
-                                return const CircularProgressIndicator();
-                            }
-                          },
-                        );
-                      default:
-                        return const CircularProgressIndicator();
-                    }
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    FutureBuilder(
+                      future: _notesService.getOrCreateUser(email: userEmail),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.done:
+                            return StreamBuilder(
+                              stream: _notesService.allNotes,
+                              builder: (context, snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return const Text(
+                                        'Waiting for all notes...');
+                                  default:
+                                    return const CircularProgressIndicator();
+                                }
+                              },
+                            );
+                          default:
+                            return const CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
