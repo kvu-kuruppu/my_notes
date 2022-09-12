@@ -24,12 +24,6 @@ class _NotesViewState extends State<NotesView> {
   }
 
   @override
-  void dispose() {
-    _notesService.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 185, 185, 185),
@@ -75,7 +69,7 @@ class _NotesViewState extends State<NotesView> {
         elevation: 0,
         backgroundColor: const Color.fromARGB(255, 185, 185, 185),
       ),
-      body: ListView(
+      body: Column(
         children: [
           // + Add Note Button
           Row(
@@ -100,43 +94,47 @@ class _NotesViewState extends State<NotesView> {
               ),
             ],
           ),
-          Container(
-            height: 100,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    FutureBuilder(
-                      future: _notesService.getOrCreateUser(email: userEmail),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.done:
-                            return StreamBuilder(
-                              stream: _notesService.allNotes,
-                              builder: (context, snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.waiting:
-                                  case ConnectionState.active:
-                                    return const Text(
-                                        'Waiting for all notes...');
-                                  default:
-                                    return const CircularProgressIndicator();
-                                }
+          FutureBuilder(
+            future: _notesService.getOrCreateUser(email: userEmail),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.done:
+                  return StreamBuilder(
+                    stream: _notesService.allNotes,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                        case ConnectionState.active:
+                          if (snapshot.hasData) {
+                            final allNotes =
+                                snapshot.data as List<DatabaseNotes>;
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: allNotes.length,
+                              itemBuilder: (context, index) {
+                                final note = allNotes[index];
+                                return ListTile(
+                                  title: Text(
+                                    note.text,
+                                    maxLines: 1,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                );
                               },
                             );
-                          default:
+                          } else {
                             return const CircularProgressIndicator();
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                          }
+                        default:
+                          return const CircularProgressIndicator();
+                      }
+                    },
+                  );
+                default:
+                  return const CircularProgressIndicator();
+              }
+            },
           ),
         ],
       ),
