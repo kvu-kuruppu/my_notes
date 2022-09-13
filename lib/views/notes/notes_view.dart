@@ -79,7 +79,7 @@ class _NotesViewState extends State<NotesView> {
             children: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(newNoteRoute);
+                  Navigator.of(context).pushNamed(createUpdateNoteRoute);
                 },
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -114,6 +114,12 @@ class _NotesViewState extends State<NotesView> {
                               notes: allNotes,
                               onDeleteNote: (note) async {
                                 await _notesService.deleteNote(id: note.id);
+                              },
+                              onTap: (note) async {
+                                Navigator.of(context).pushNamed(
+                                  createUpdateNoteRoute,
+                                  arguments: note,
+                                );
                               },
                             );
                           } else {
