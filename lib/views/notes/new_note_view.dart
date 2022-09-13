@@ -94,6 +94,14 @@ class _NewNoteViewState extends State<NewNoteView> {
           ),
         ),
         elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.done),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: createNewNote(),
