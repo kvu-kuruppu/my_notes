@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notebook/constants/routes.dart';
 import 'package:my_notebook/services/auth/auth_exceptions.dart';
-import 'package:my_notebook/services/auth/auth_service.dart';
-
-import 'dart:developer' as devtools show log;
+import 'package:my_notebook/services/auth/bloc/auth_bloc.dart';
+import 'package:my_notebook/services/auth/bloc/auth_event.dart';
 
 import 'package:my_notebook/utils/dialogs/error_dialog.dart';
 
@@ -79,6 +79,7 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(
                   height: 10,
                 ),
+                // Login Button
                 TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 0, 132, 255),
@@ -87,26 +88,12 @@ class _LoginViewState extends State<LoginView> {
                       final email = _email.text;
                       final password = _password.text;
                       try {
-                        final userCredential =
-                            await AuthService.firebase().logIn(
-                          email: email,
-                          password: password,
-                        );
-                        final user = AuthService.firebase().currentUser;
-                        if (user?.isEmailVerified ?? false) {
-                          // user email verified
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            notesRoute,
-                            (route) => false,
-                          );
-                        } else {
-                          // user email not verified
-                          Navigator.of(context).pushNamed(
-                            verifyEmailRoute,
-                            // (route) => false,
-                          );
-                        }
-                        devtools.log(userCredential.toString());
+                        context.read<AuthBloc>().add(
+                              AuthEventLogin(
+                                email,
+                                password,
+                              ),
+                            );
                       } on UserNotFoundAuthException {
                         await showErrorDialog(
                           context,
