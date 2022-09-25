@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:my_notebook/constants/routes.dart';
-import 'package:my_notebook/services/auth/auth_service.dart';
+import 'package:my_notebook/services/auth/bloc/auth_bloc.dart';
+import 'package:my_notebook/services/auth/bloc/auth_event.dart';
 
 class VerificationView extends StatefulWidget {
   const VerificationView({Key? key}) : super(key: key);
@@ -45,9 +45,10 @@ class _VerificationViewState extends State<VerificationView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextButton(
-                      onPressed: () async {
-                        await AuthService.firebase().sendEmailVerification();
-                        devtools.log('object');
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              const AuthEventEmailVerification(),
+                            );
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.lightBlue,
@@ -68,12 +69,10 @@ class _VerificationViewState extends State<VerificationView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      onPressed: () async {
-                        await AuthService.firebase().logOut();
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          registerRoute,
-                          (route) => false,
-                        );
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              const AuthEventLogOut(),
+                            );
                       },
                       icon: const Icon(
                         Icons.arrow_circle_left,
